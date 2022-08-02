@@ -10,7 +10,7 @@ class WebScreenLayout extends StatefulWidget {
 }
 
 class _WebScreenLayoutState extends State<WebScreenLayout> {
-   String username = "";
+  String username = "";
   @override
   void initState() {
     getUserDetails();
@@ -22,7 +22,7 @@ class _WebScreenLayoutState extends State<WebScreenLayout> {
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
-    print(snap.data());
+
     username = (snap.data() as Map<String, dynamic>)['userName'];
     setState(() {});
   }
