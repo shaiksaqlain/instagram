@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: prefer_final_fields, unused_field
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:insta_clone/providers.dart/user_provider.dart';
-import 'package:insta_clone/screens/login_screen.dart';
-import 'package:provider/provider.dart';
-import 'package:insta_clone/models/user_model.dart' as model;
+import 'package:insta_clone/responsive/global_varibles.dart';
+import 'package:insta_clone/utils/colors.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -14,72 +13,86 @@ class MobileScreenLayout extends StatefulWidget {
 }
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
-  String username = "";
+  int _page = 0;
+  late PageController pageController;
   @override
   void initState() {
-    getUserDetails();
+    pageController = PageController();
     super.initState();
   }
 
-  getUserDetails() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
+  @override
+  void dispose() {
+    pageController.dispose();
 
-    username = (snap.data() as Map<String, dynamic>)['userName'];
-    setState(() {});
+    super.dispose();
+  }
+
+  navigationTapped(int page) {
+    pageController.jumpToPage(page);
+  }
+
+  void onPageChanged(int page) {
+    setState(() {
+      _page = page;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
-        body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Center(
-            child: CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage(user.picUrl),
+      bottomNavigationBar: CupertinoTabBar(
+        backgroundColor: mobileBackgroundColor,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: _page == 0 ? primaryColor : secondaryColor,
             ),
+            label: "",
+            backgroundColor: primaryColor,
           ),
-          const SizedBox(height: 10),
-          Text(
-            "Username: ${user.userName}",
-            style: const TextStyle(color: Colors.white),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.search,
+              color: _page == 1 ? primaryColor : secondaryColor,
+            ),
+            label: "",
+            backgroundColor: primaryColor,
           ),
-          const SizedBox(height: 10),
-          Text(
-            "Emai: ${user.email}",
-            style: const TextStyle(color: Colors.white),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add_circle,
+              color: _page == 2 ? primaryColor : secondaryColor,
+            ),
+            label: "",
+            backgroundColor: primaryColor,
           ),
-          const SizedBox(height: 10),
-          Text(
-            "uid: ${user.uid}",
-            style: const TextStyle(color: Colors.white),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.favorite,
+              color: _page == 3 ? primaryColor : secondaryColor,
+            ),
+            label: "",
+            backgroundColor: primaryColor,
           ),
-          const SizedBox(height: 10),
-          Text(
-            "followers: ${user.followers}",
-            style: const TextStyle(color: Colors.white),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+              color: _page == 4 ? primaryColor : secondaryColor,
+            ),
+            label: "",
+            backgroundColor: primaryColor,
           ),
-          const SizedBox(height: 10),
-          Text(
-            "following: ${user.following}",
-            style: const TextStyle(color: Colors.white),
-          ),
-          TextButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (BuildContext context) => const LoginScreen()));
-              },
-              child: const Text("Signout"))
         ],
+        onTap: (value) => navigationTapped(value),
       ),
-    ));
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: pageController,
+        onPageChanged: onPageChanged,
+        children:  homeScreenItems,
+      ),
+    );
   }
 }

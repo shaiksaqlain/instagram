@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:insta_clone/auth/storage_methods.dart';
+import 'package:insta_clone/resourse/storage_methods.dart';
 import 'package:insta_clone/models/user_model.dart' as model;
 
 class AuthMethods {
@@ -16,6 +16,7 @@ class AuthMethods {
 
     DocumentSnapshot snap =
         await firebaseFirestore.collection("users").doc(currentUser.uid).get();
+   
     return model.User.fromSnap(snap);
   }
 
@@ -73,6 +74,7 @@ class AuthMethods {
   Future<String> loginUser(
       {required String userName, required String password}) async {
     String res = "some error Occured";
+    
     try {
       if (userName.isNotEmpty || password.isNotEmpty) {
         await _auth.signInWithEmailAndPassword(
