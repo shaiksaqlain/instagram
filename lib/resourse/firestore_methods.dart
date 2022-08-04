@@ -47,16 +47,22 @@ class FireStoremethods {
       String postId, String uid, List likes, bool ispostBigLike) async {
     try {
       if (likes.contains(uid)) {
-        await _firebaseFirestore.collection('posts').doc(postId).update({
-          "likes": FieldValue.arrayRemove([uid]),
-        });
+        await _firebaseFirestore.collection('posts').doc(postId).update(
+          {
+            "likes": FieldValue.arrayRemove([uid]),
+          },
+        );
       } else {
-        await _firebaseFirestore.collection('posts').doc(postId).update({
-          "likes": FieldValue.arrayUnion([uid])
-        });
+        await _firebaseFirestore.collection('posts').doc(postId).update(
+          {
+            "likes": FieldValue.arrayUnion([uid])
+          },
+        );
       }
     } catch (e) {
-      print(e.toString());
+      print(
+        e.toString(),
+      );
     }
   }
 
@@ -70,28 +76,31 @@ class FireStoremethods {
             .doc(postId)
             .collection('comments')
             .doc(cmtID)
-            .set({
-          'profilePic': profilePic,
-          'name': name,
-          'uid': uid,
-          'text': text,
-          'commentId': cmtID,
-          'datePublish': DateTime.now()
-        });
+            .set(
+          {
+            'profilePic': profilePic,
+            'name': name,
+            'uid': uid,
+            'text': text,
+            'commentId': cmtID,
+            'datePublish': DateTime.now()
+          },
+        );
       } else {
         showSnackbar("Text is empty !", context);
       }
     } catch (e) {
-      print(e.toString());
+      print(
+        e.toString(),
+      );
     }
   }
 
-  Future<void> deletePost(String postId)async{
+  Future<void> deletePost(String postId) async {
     try {
       _firebaseFirestore.collection('posts').doc(postId).delete();
     } catch (e) {
       print(e.toString());
     }
-
   }
 }
