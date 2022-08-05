@@ -22,9 +22,9 @@ class _FollowButtonState extends State<FollowButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(top: 2,left: 15),
+      padding: const EdgeInsets.only(top: 2, left: 15),
       child: TextButton(
-          onPressed: () {},
+          onPressed:widget.function,
           child: Container(
             decoration: BoxDecoration(
                 color: widget.backgroundColor,
@@ -37,6 +37,7 @@ class _FollowButtonState extends State<FollowButton> {
               widget.text,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 15,
                 color: widget.textColor,
               ),
             ),

@@ -93,7 +93,7 @@ class _AddScreenState extends State<AddScreen> {
             ),
           )
         : Scaffold(
-            appBar: AppBar(
+            appBar:  AppBar(
               backgroundColor: mobileBackgroundColor,
               leading: IconButton(
                 onPressed: () {

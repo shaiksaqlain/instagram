@@ -103,4 +103,31 @@ class FireStoremethods {
       print(e.toString());
     }
   }
+
+  Future<void> followUser(String uid, String followId) async {
+    print(uid);
+    print(followId);
+    try {
+      DocumentSnapshot snap =
+          await _firebaseFirestore.collection('users').doc(uid).get();
+      List following = (snap.data() as dynamic)['following'];
+      if (following.contains(followId)) {
+        await _firebaseFirestore.collection('users').doc(followId).update({
+          'followers': FieldValue.arrayRemove([uid]),
+        });
+        await _firebaseFirestore.collection('users').doc(uid).update({
+          'following': FieldValue.arrayRemove([followId]),
+        });
+      } else {
+        await _firebaseFirestore.collection('users').doc(followId).update({
+          'followers': FieldValue.arrayUnion([uid]),
+        });
+        await _firebaseFirestore.collection('users').doc(uid).update({
+          'following': FieldValue.arrayUnion([followId]),
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }

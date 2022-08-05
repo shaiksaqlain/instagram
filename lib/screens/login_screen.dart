@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insta_clone/resourse/auth_methods.dart';
+import 'package:insta_clone/responsive/global_varibles.dart';
 import 'package:insta_clone/screens/signup_screen.dart';
 import 'package:insta_clone/utils/colors.dart';
 import 'package:insta_clone/utils/utils.dart';
@@ -56,7 +57,11 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+            padding: MediaQuery.of(context).size.width > webScreenSize
+                ? EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 3,
+                   )
+                : const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
