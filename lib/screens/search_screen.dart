@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, prefer_interpolation_to_compose_strings
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +68,9 @@ class _ScearchScreenState extends State<ScearchScreen> {
           : FutureBuilder(
               future: FirebaseFirestore.instance
                   .collection('users')
-                  .where('userName', isEqualTo: searchController.text)
+                  .where('userName',
+                      isGreaterThanOrEqualTo: searchController.text)
+                  .where("userName", isLessThanOrEqualTo: searchController.text+"\uf8ff")
                   .get(),
               builder: (context,
                   AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -82,7 +84,8 @@ class _ScearchScreenState extends State<ScearchScreen> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ProfileScreen(uid: snapshot.data!.docs[index]['uid']))),
+                          builder: (context) => ProfileScreen(
+                              uid: snapshot.data!.docs[index]['uid']))),
                       child: ListTile(
                         leading: CircleAvatar(
                           backgroundImage: NetworkImage(

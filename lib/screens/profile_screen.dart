@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_clone/resourse/firestore_methods.dart';
 import 'package:insta_clone/screens/login_screen.dart';
+import 'package:insta_clone/screens/share_profile.dart';
 import 'package:insta_clone/utils/colors.dart';
 import 'package:insta_clone/utils/utils.dart';
 import 'package:insta_clone/widgets/follow_button.dart';
@@ -70,6 +71,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               backgroundColor: mobileBackgroundColor,
               title: Text(userData['userName']),
               centerTitle: false,
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext build) =>   ShareProfile( userName: userData['userName']),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.share))
+              ],
             ),
             body: ListView(
               children: [
